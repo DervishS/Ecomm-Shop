@@ -1,0 +1,23 @@
+{
+  "name": "ecom-shop",
+  "version": "2.0.0",
+  "description": "eCommerce app with MERN",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node backend/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DervishS/Ecomm-Shop.git"
+  },
+  "author": "Dervish Skenderi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DervishS/Ecomm-Shop/issues"
+  },
+  "homepage": "https://github.com/DervishS/Ecomm-Shop#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
