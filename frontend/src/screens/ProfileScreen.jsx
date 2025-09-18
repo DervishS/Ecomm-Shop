@@ -4,12 +4,11 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-//import { getUserDetails, updateUserProfile } from '../actions/userActions';
-//import { listMyOrders } from '../actions/orderActions';
-//import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants';
 import { toast } from 'react-toastify';
 import { useProfileMutation } from '../slices/usersApiSlice';
 import { setCredentials } from '../slices/authSlice';
+import { useGetMyOrdersQuery } from '../slices/ordersApiSlice';
+import { FaTimes } from 'react-icons/fa';
 
 const ProfileScreen = () => {
   const [name, setName] = useState('');
@@ -22,6 +21,8 @@ const ProfileScreen = () => {
   const { userInfo } = useSelector((state) => state.auth);
 
   const [updateProfile, { isLoading: loadingUpdateProfile }] = useProfileMutation();
+
+  const { data: orders, isLoading: loadingOrders, error: errorOrders } = useGetMyOrdersQuery();
 
   useEffect(() => {
     if (userInfo) {
@@ -95,7 +96,8 @@ const ProfileScreen = () => {
     </Col>
     <Col md={9}>
       <h2>My Orders</h2>
-      <Table striped bordered hover responsive className='table-sm'>
+      {loadingOrders ? ( <Loader /> ) : errorOrders ? ( <Message variant='danger'>{errorOrders?.data?.message || errorOrders.error}</Message> ) :
+      (<Table striped bordered hover responsive className='table-sm'>
         <thead>
           <tr>
             <th>ID</th>
@@ -107,7 +109,7 @@ const ProfileScreen = () => {
           </tr>
         </thead>
         <tbody>
-          {/* {orders.map((order) => (
+          {orders.map((order) => (
             <tr key={order._id}>
               <td>{order._id}</td>
               <td>{order.createdAt.substring(0, 10)}</td>
@@ -116,14 +118,14 @@ const ProfileScreen = () => {
                 {order.isPaid ? (
                   order.paidAt.substring(0, 10)
                 ) : (
-                  <i className='fas fa-times' style={{ color: 'red' }}></i>
+                  <FaTimes style={{ color: 'red' }}></FaTimes>
                 )}
               </td>
               <td>
                 {order.isDelivered ? (
                   order.deliveredAt.substring(0, 10)
                 ) : (
-                  <i className='fas fa-times' style={{ color: 'red' }}></i>
+                  <FaTimes className='fas fa-times' style={{ color: 'red' }}></FaTimes>
                 )}
               </td>
               <td>
@@ -134,9 +136,9 @@ const ProfileScreen = () => {
                 </LinkContainer>
               </td>
             </tr>
-          ))} */}
+          ))}
         </tbody>
-      </Table>
+      </Table> )}
     </Col>
   </Row>
 }
