@@ -6,7 +6,7 @@ import Message from '../components/Message';
 import Loader from '../components/Loader';
 import FormContainer from '../components/FormContainer';
 import { toast } from 'react-toastify';
-import { useUpdateProductMutation, useGetProductDetailsQuery } from '../slices/productsApiSlice';
+import { useUpdateProductMutation, useGetProductDetailsQuery, useUploadProductImageMutation } from '../slices/productsApiSlice';
 
 const ProductEditScreen = () => {
   const { id: productId } = useParams();
@@ -24,6 +24,8 @@ const ProductEditScreen = () => {
   const [updateProduct, { isLoading: loadingUpdate }] = useUpdateProductMutation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const [uploadProductImage, { isLoading: loadingUpload }] = useUploadProductImageMutation();
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -113,11 +115,11 @@ return (
                 onChange={(e) => setImage(e.target.value)}
               ></Form.Control>
               <Form.Control
+                type='file'
                 label='Choose File'
                 onChange={uploadFileHandler}
-                type='file'
               ></Form.Control>
-              {loadingUpdate && <Loader />}
+              {loadingUpload && <Loader />}
             </Form.Group>
 
             <Form.Group controlId='brand'>
