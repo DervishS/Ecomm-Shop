@@ -135,7 +135,7 @@ const getUsersByID = asyncHandler (async (req, res) => {
     const user = await User.findById(req.params.id).select('-password'); // second part because we don't want password
 
     if (user) {
-        res.status(200).res.json(user);
+        res.json(user);
     } else {
         res.status(404);
         throw new Error('User not found!');
