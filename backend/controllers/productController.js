@@ -87,11 +87,11 @@ const deleteProduct = asyncHandler (async (req, res) => {
     }
 });
 
-// @desc Create a new product
+// @desc Create a new review
 // @route POST /api/products/:id/reviews
 // @access Public
 
-const createProductReview = asyncHandler (async (req, res) => {
+const createProductReview = asyncHandler(async (req, res) => {
     const { rating, comment } = req.body;
 
     const product = await Product.findById(req.params.id);
@@ -126,8 +126,7 @@ const createProductReview = asyncHandler (async (req, res) => {
         } else {
             res.status(404);
             throw new Error('Resource not found');
-        }
-        
+        }   
     });
 
 export {
