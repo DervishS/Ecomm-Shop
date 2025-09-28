@@ -4,6 +4,7 @@ import { useGetProductsQuery } from '../slices/productsApiSlice.js';
 import Loader from '../components/Loader.jsx';
 import Message from '../components/Message.jsx';
 import { useParams } from 'react-router-dom';
+import Pages from '../components/Pages.jsx';
 
 const HomeScreen = () => {
 const { pageNumber } = useParams();
@@ -25,6 +26,7 @@ const { data, isLoading, error } = useGetProductsQuery({ pageNumber });
               </Col>
           ))}
       </Row>
+      <Pages pages={data.pages} page={data.page} />
       </>) }
     </>
   )
