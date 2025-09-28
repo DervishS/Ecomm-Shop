@@ -11,7 +11,7 @@ const getProducts = asyncHandler (async (req, res) => {
     const page = Number(req.query.pageNumber) || 1;
     const count = await Product.countDocuments();
 
-    const products = (await Product.find({})).limit(pageSize).skip(pageSize * (page - 1)); // empty object to get all of them
+    const products = await Product.find({}).limit(pageSize).skip(pageSize * (page - 1)); // empty object to get all of them
     res.json({products, page, pages: Math.ceil(count / pageSize)});
 });
 
