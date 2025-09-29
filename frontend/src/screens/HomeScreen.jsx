@@ -5,6 +5,7 @@ import Loader from '../components/Loader.jsx';
 import Message from '../components/Message.jsx';
 import { useParams } from 'react-router-dom';
 import Pages from '../components/Pages.jsx';
+import { Link } from 'react-router-dom';
 
 const HomeScreen = () => {
 const { keyword, pageNumber } = useParams();
@@ -13,6 +14,7 @@ const { data, isLoading, error } = useGetProductsQuery({ keyword, pageNumber });
 
   return (
     <>
+      { keyword && <Link to='/' className='btn btn-light mb-4'>Go Back</Link>}
       { isLoading ? (
         <Loader />
       ) : error ? (<Message variant='danger'>
