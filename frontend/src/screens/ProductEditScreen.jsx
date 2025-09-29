@@ -1,7 +1,6 @@
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import FormContainer from '../components/FormContainer';
@@ -23,7 +22,6 @@ const ProductEditScreen = () => {
 
   const [updateProduct, { isLoading: loadingUpdate }] = useUpdateProductMutation();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const [uploadProductImage, { isLoading: loadingUpload }] = useUploadProductImageMutation();
 
