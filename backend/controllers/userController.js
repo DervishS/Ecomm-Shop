@@ -185,6 +185,59 @@ const updateUser = asyncHandler (async (req, res) => {
     }
 });
 
+// @desc    Add product to favorites
+// @route   POST /api/users/favorites/:id
+// @access  Private
+const addFavorite = asyncHandler(async (req, res) => {
+    const productId = req.params.id;
+    const user = await User.findById(req.user._id);
+
+    if (user) {
+        if (user.favorites.includes(productId)) {
+            res.status(400);
+            throw new Error('Product already in favorites');
+        }
+
+        user.favorites.push(productId);
+        await user.save();
+        
+        res.json({ message: 'Product added to favorites', favorites: user.favorites });
+    } else {
+        res.status(404);
+        throw new Error('User not found');
+    }
+});
+// @desc    Remove product from favorites
+// @route   DELETE /api/users/favorites/:id
+// @access  Private
+const removeFavorite = asyncHandler(async (req, res) => {
+    const productId = req.params.id;
+    const user = await User.findById(req.user._id);
+
+    if (user) {
+        user.favorites = user.favorites.filter((id) => id.toString() !== productId);
+        await user.save();
+
+        res.json({ message: 'Product removed from favorites', favorites: user.favorites });
+    } else {
+        res.status(404);
+        throw new Error('User not found');
+    }
+})
+// @desc    Get all favorite products
+// @route   GET /api/users/favorites
+// @access  Private
+const getFavorites = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.user._id).populate('favorites', 'name image price countInStock');
+
+    if (user) {
+        res.json(user.favorites);
+    } else {
+        res.status(404);
+        throw new Error('User not found');
+    }
+})
+
 export { 
     authUser,
     registerUser,
@@ -195,4 +248,7 @@ export {
     deleteUser,
     getUsersByID,
     updateUser,
+    addFavorite,
+    removeFavorite,
+    getFavorites,
 };
