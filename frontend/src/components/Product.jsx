@@ -1,7 +1,6 @@
-import { Card } from 'react-bootstrap'
+import { Card, Badge } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import  Rating  from './Rating'
-import React from 'react'
 
 const Product = ({ product }) => {
   return (
@@ -23,6 +22,9 @@ const Product = ({ product }) => {
 
             <Card.Text as="h3">
                 ${product.price}
+            </Card.Text>
+            <Card.Text className={product.countInStock > 0 ? 'text-success' : 'text-danger'} style={{ fontWeight: 'bold'}}>
+                {product.countInStock > 0 ? 'In Stock' : 'Out of Stock'}
             </Card.Text>
         </Card.Body>
     </Card>
