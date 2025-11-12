@@ -55,13 +55,21 @@ const ProductScreen = () => {
     const [removeFavorite] = useRemoveFavoriteMutation();
 
     const favoriteHandler = async () => {
-        await addFavorite({ itemId: productId });
-        toast.success('Added to favorites');
+        try {
+            await addFavorite({ itemId: productId }).unwrap();
+            toast.success('Added to favorites');
+        } catch (err) {
+            toast.error(err?.data?.message || err.error || 'Failed to add to favorites');
+        }
     };
 
     const removeFavoriteHandler = async () => {
-        await removeFavorite({ itemId: productId });
-        toast.success('Removed from favorites');
+        try {
+            await removeFavorite({ itemId: productId }).unwrap();
+            toast.info('Removed from favorites');
+        } catch (err) {
+            toast.error(err?.data?.message || err.error || 'Failed to remove from favorites');
+        }
     };
 
     const { data: favorites } = useGetFavoritesQuery();
