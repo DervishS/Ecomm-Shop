@@ -189,45 +189,49 @@ const updateUser = asyncHandler (async (req, res) => {
 // @route   POST /api/users/favorites/:id
 // @access  Private
 const addFavorite = asyncHandler(async (req, res) => {
-    const productId = req.params.id;
-    const user = await User.findById(req.user._id);
+  const user = await User.findById(req.user._id);
 
-    if (!user) {
-        res.status(404);
-        throw new Error('User not found');
-    }
+  const productId = req.params.id;
+  if (!user) {
+    res.status(404);
+    throw new Error('User not found');
+  }
 
-    const alreadyFavorited = user.favorites.some(
-        (favId) => favId.toString() === productId.toString()
-    );
+  // Check if already in favorites
+  if (user.favorites.includes(productId)) {
+    res.status(400);
+    throw new Error('Product already in favorites');
+  }
 
-    if (!alreadyFavorited) {
-        res.status(400);
-        throw new Error('Product not in favorites');
-    }
+  user.favorites.push(productId);
+  await user.save();
 
-    user.favorites.push(productId);
-    await user.save();
-
-    res.json({ message: 'Product added to favorites', favorites: user.favorites });
+  res.status(201).json(user.favorites);
 });
 // @desc    Remove product from favorites
 // @route   DELETE /api/users/favorites/:id
 // @access  Private
 const removeFavorite = asyncHandler(async (req, res) => {
-    const productId = req.params.id;
-    const user = await User.findById(req.user._id);
+  const user = await User.findById(req.user._id);
 
-    if (user) {
-        user.favorites = user.favorites.filter((id) => id.toString() !== productId);
-        await user.save();
+  const productId = req.params.id;
+  if (!user) {
+    res.status(404);
+    throw new Error('User not found');
+  }
 
-        res.json({ message: 'Product removed from favorites', favorites: user.favorites });
-    } else {
-        res.status(404);
-        throw new Error('User not found');
-    }
-})
+  if (!user.favorites.includes(productId)) {
+    res.status(400);
+    throw new Error('Product not in favorites');
+  }
+
+  user.favorites = user.favorites.filter(
+    (favId) => favId.toString() !== productId.toString()
+  );
+
+  await user.save();
+  res.status(200).json(user.favorites);
+});
 // @desc    Get all favorite products
 // @route   GET /api/users/favorites
 // @access  Private
