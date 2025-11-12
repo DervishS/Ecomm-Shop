@@ -60,23 +60,22 @@ export const usersApiSlice = apiSlice.injectEndpoints({
             invalidatesTags: ['User'],
         }),
         getFavorites: builder.query({
-            query: (userId) => ({
+            query: () => ({
                 url: `${USERS_URL}/favorites`,
                 method: 'GET',
             }),
             providesTags: ['Favorite'],
         }),
         addFavorite: builder.mutation({
-            query: (data) => ({
-                url: `${USERS_URL}/favorites`,
+            query: ({ itemId }) => ({
+                url: `${USERS_URL}/favorites/${itemId}`,
                 method: 'POST',
-                body: { itemId: data.itemId },  
             }),
             invalidatesTags: ['Favorite'],
         }),
         removeFavorite: builder.mutation({
-            query: (data) => ({
-                url: `${USERS_URL}/favorites/${data.itemId}`,
+            query: ({ itemId }) => ({
+                url: `${USERS_URL}/favorites/${itemId}`,
                 method: 'DELETE',
             }),
             invalidatesTags: ['Favorite'],

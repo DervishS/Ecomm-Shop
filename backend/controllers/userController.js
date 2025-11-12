@@ -192,20 +192,24 @@ const addFavorite = asyncHandler(async (req, res) => {
     const productId = req.params.id;
     const user = await User.findById(req.user._id);
 
-    if (user) {
-        if (user.favorites.includes(productId)) {
-            res.status(400);
-            throw new Error('Product already in favorites');
-        }
-
-        user.favorites.push(productId);
-        await user.save();
-        
-        res.json({ message: 'Product added to favorites', favorites: user.favorites });
-    } else {
+    if (!user) {
         res.status(404);
         throw new Error('User not found');
     }
+
+    const alreadyFavorited = user.favorites.some(
+        (favId) => favId.toString() === productId.toString()
+    );
+
+    if (!alreadyFavorited) {
+        res.status(400);
+        throw new Error('Product not in favorites');
+    }
+
+    user.favorites.push(productId);
+    await user.save();
+
+    res.json({ message: 'Product added to favorites', favorites: user.favorites });
 });
 // @desc    Remove product from favorites
 // @route   DELETE /api/users/favorites/:id
@@ -236,7 +240,7 @@ const getFavorites = asyncHandler(async (req, res) => {
         res.status(404);
         throw new Error('User not found');
     }
-})
+});
 
 export { 
     authUser,
