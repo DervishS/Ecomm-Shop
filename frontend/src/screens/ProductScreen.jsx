@@ -5,6 +5,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Rating from '../components/Rating';
 import { useGetProductDetailsQuery, useCreateReviewMutation } from '../slices/productsApiSlice.js';
+import { useAddFavoriteMutation, useGetFavoritesQuery, useRemoveFavoriteMutation } from '../slices/usersApiSlice.js';
 import Loader from '../components/Loader.jsx';
 import Message from '../components/Message.jsx';
 import { addToCart } from '../slices/cartSlice.js';
@@ -49,6 +50,22 @@ const ProductScreen = () => {
             toast.error(err?.data?.message || err.error);
         }
     };
+
+    const [addFavorite] = useAddFavoriteMutation();
+    const [removeFavorite] = useRemoveFavoriteMutation();
+
+    const favoriteHandler = async () => {
+        await addFavorite({ itemId: productId });
+        toast.success('Added to favorites');
+    };
+
+    const removeFavoriteHandler = async () => {
+        await removeFavorite({ itemId: productId });
+        toast.success('Removed from favorites');
+    };
+
+    const { data: favorites } = useGetFavoritesQuery();
+    const isFavorited = favorites?.some(fav => fav._id === productId);
 
   return <>
     <Link className='btn btn-light my-3' to="/">Go Back</Link>
@@ -121,6 +138,13 @@ const ProductScreen = () => {
                                 >
                                     Add To Cart
                         </Button>
+                    </ListGroup.Item>
+                    <ListGroup.Item>
+                        <Button className='mt-2' 
+                            variant={ isFavorited ? 'danger' : 'outline-danger'}
+                            onClick={ isFavorited ? removeFavoriteHandler : favoriteHandler } >
+                                { isFavorited ? 'Remove from Favorites ❌' : 'Add to Favorites ❤️' }
+                            </Button>
                     </ListGroup.Item>
                 </ListGroup>
             </Card>
