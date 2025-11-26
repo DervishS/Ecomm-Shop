@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Row, Col, Image, ListGroup, Card, Button, Form } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -11,6 +11,7 @@ import Message from '../components/Message.jsx';
 import { addToCart } from '../slices/cartSlice.js';
 import { toast } from 'react-toastify';
 import Meta from '../components/Meta.jsx';
+import { addRecentlyViewed } from '../utils/recentlyViewed.js';
 
 const ProductScreen = () => {
     const { id: productId } = useParams();
@@ -74,6 +75,12 @@ const ProductScreen = () => {
 
     const { data: favorites } = useGetFavoritesQuery();
     const isFavorited = favorites?.some(fav => fav._id === productId);
+
+    useEffect(() => {
+        if (productId) {
+            addRecentlyViewed(productId, 4);
+        }
+    }, [productId]);
 
   return <>
     <Link className='btn btn-light my-3' to="/">Go Back</Link>

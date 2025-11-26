@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom';
 import Pages from '../components/Pages.jsx';
 import { Link } from 'react-router-dom';
 import ProductCarousel from '../components/ProductCarousel.jsx';
+import RecentlyViewed from '../components/RecentlyViewed.jsx';
 
 const HomeScreen = () => {
 const { keyword, pageNumber } = useParams();
@@ -38,6 +39,7 @@ const { data, isLoading, error } = useGetProductsQuery({ keyword, pageNumber });
               </Col>
           ))}
       </Row>
+      <RecentlyViewed max={4} />
       <Pages pages={data.pages} page={data.page} keyword={keyword ? keyword : ''}/>
       </>) }
     </>
