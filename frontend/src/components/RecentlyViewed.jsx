@@ -6,7 +6,7 @@ import RecentlyViewedItem from './RecentlyViewedItem';
 const RecentlyViewed = ({ max = 4}) => {
     const [ids, setIds] = useState([]);
 
-    useEffect( () => {
+    useEffect(() => {
         setIds(getRecentlyViewed().slice(0, max));
     }, [max]);
 
@@ -21,7 +21,7 @@ const RecentlyViewed = ({ max = 4}) => {
     <>
         <div className='d-flex justify-content-between align-items-center mb-2'>
             <h5 className='mb-0'>Recently Viewed</h5>
-            <Button class="btn btn-light" size="sm" onClick={handleClear}>Clear</Button>
+            <Button variant="light" size="sm" onClick={handleClear}>Clear</Button>
         </div>
         <div className='d-flex flex-wrap'>
             {ids.map((id) => (
