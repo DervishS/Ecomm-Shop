@@ -1,0 +1,8 @@
+version: "2"
+
+authtoken: ${NGROK_AUTHTOKEN}
+
+tunnels:
+  app:
+    proto: http
+    addr: 5000
