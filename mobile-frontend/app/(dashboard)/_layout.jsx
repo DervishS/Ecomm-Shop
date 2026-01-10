@@ -19,6 +19,16 @@ export default function DashboardLayout() {
             }}
             >
                 <Tabs.Screen 
+                    name="products"
+                    options={{ tabBarLabel: 'Products', tabBarIcon: ({ focused }) => (
+                        <Ionicons 
+                            name={focused ? "home" : "home-outline"}
+                            size={24}
+                            color={focused ? theme.iconColorFocused : theme.iconColor}
+                        />
+                    )}}
+                />
+                <Tabs.Screen 
                     name="search" 
                     options={{ tabBarLabel: 'Search', tabBarIcon: ({ focused }) => (
                         <Ionicons 
