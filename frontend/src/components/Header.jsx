@@ -7,6 +7,7 @@ import { logout } from '../slices/authSlice';
 import { useNavigate } from 'react-router-dom';
 import SearchBox from './SearchBox';
 import { resetCart } from '../slices/cartSlice';
+import logo from '../ps-dark.png';
 
 const Header = () => {
   const { cartItems } = useSelector((state) => state.cart);
@@ -33,7 +34,9 @@ const Header = () => {
       <Navbar bg="dark" variant="dark" expand="md" collapseOnSelect>
         <Container>
           <LinkContainer to="/">
-            <Navbar.Brand>DSK</Navbar.Brand>
+            <Navbar.Brand>
+              <img src={logo} alt="Logo" style={{ width: '250px', height: 'auto' }} />
+            </Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
