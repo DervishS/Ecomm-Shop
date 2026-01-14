@@ -1,4 +1,4 @@
-import { StyleSheet, FlatList, ActivityIndicator } from 'react-native'
+import { StyleSheet, FlatList, ActivityIndicator, Image } from 'react-native'
 import { useState, useEffect } from 'react'
 import API from '../../src/services/api'
 
@@ -8,6 +8,8 @@ import ThemedLogo from '../../components/ThemedLogo'
 import Spacer from '../../components/Spacer'
 import ThemedText from '../../components/ThemedText'
 import ThemedButton from '../../components/ThemedButton'
+
+const BASE_URL = 'https://mallory-dimetric-jerrold.ngrok-free.dev';
 
 const products = () => {
     const [products, setProducts] = useState([])
@@ -39,15 +41,19 @@ const products = () => {
   return (
     <ThemedView style={styles.container} safe={true}>
         <ThemedLogo style={styles.logo}/>
-        <FlatList data={products} keyExtractor={(item) => item._id} renderItem={({ item }) => (
+        <Spacer />
+        <FlatList 
+            data={products} 
+            keyExtractor={(item) => item._id} 
+            renderItem={({ item }) => (
             <ThemedView style={{ padding: 10, borderBottomWidth: 1, borderBottomColor: '#ccc', width: '100%' }}>
+                <Image source={{ uri: `${BASE_URL}/images/${item.image}` }} style={{ width: '100%', height: 200, resizeMode: 'cover' }} />
                 <ThemedText style={{ fontSize: 18, fontWeight: 'bold' }}>{item.name}</ThemedText>
                 <ThemedText style={{ fontSize: 16 }}>${item.price.toFixed(2)}</ThemedText>
                 <Spacer height={5} />
                 <ThemedButton title="View Details" onPress={() => { /* Navigate to product details */ }} />
             </ThemedView>
-        )} />
-        <Spacer />
+        )} />   
     </ThemedView>
   )
 }
